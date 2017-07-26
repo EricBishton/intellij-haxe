@@ -30,7 +30,7 @@
   <depends optional="true" config-file="flex-debugger-support.xml">com.intellij.flex</depends>
   <depends optional="true" config-file="debugger-support.xml">com.intellij.modules.ultimate</depends>
 
-  <version>0.11.1.Preview.3 for @plugin.compatibility.description@</version>
+  <version>0.11.1.Preview.4 for @plugin.compatibility.description@</version>
   <change-notes>
     <![CDATA[
       <p>This jar is compatible with @plugin.compatibility.description@</p>
@@ -40,6 +40,13 @@
       <p>Donate: <a href="https://www.patreon.com/EricBishton">https://www.patreon.com/EricBishton</a></p>
       <p>Professionally supported and maintained by Bishton Software Solutions: <a href="http://BishtonSoftwareSolutions.com">http://BishtonSoftwareSolutions.com</a></p>
       <p/>
+      <p>0.11.1.Preview.4:</p>
+      <ul>
+        <li>Check for and halt type resolution when a cyclical/recursive definition is found.</li>
+        <li>Address some freezes by delaying use of indices until indexing is complete.</li>
+        <li>Do not cache (empty) resolution results found while indices are incomplete.</li>
+        <li>Speed haxelib syncing (and stop unnecessary re-indexing).  (Regression)</li>
+      </ul>
       <p>0.11.1.Preview.3:</p>
       <ul>
         <li>Attempt to fix freezes by fixing some multi-threading issues and other exceptions being thrown.</li>
