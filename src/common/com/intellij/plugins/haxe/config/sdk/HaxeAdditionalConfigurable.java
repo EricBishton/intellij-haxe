@@ -99,7 +99,9 @@ public class HaxeAdditionalConfigurable implements AdditionalDataConfigurable {
       final boolean bRemoveDuplicates = haxeSdkData.getRemoveCompletionDuplicatesFlag();
       myHaxeAdditionalConfigurablePanel.setRemoveCompletionDuplicatesFlag(bRemoveDuplicates);
     }
-    myHaxeAdditionalConfigurablePanel.getPanel().repaint();
+    JComponent panel = myHaxeAdditionalConfigurablePanel.getPanel();
+    panel.validate();
+    panel.repaint();
   }
 
   @Override
