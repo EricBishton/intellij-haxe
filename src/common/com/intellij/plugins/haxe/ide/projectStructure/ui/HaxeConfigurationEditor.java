@@ -2,6 +2,7 @@
  * Copyright 2000-2013 JetBrains s.r.o.
  * Copyright 2014-2014 AS3Boyan
  * Copyright 2014-2014 Elias Ku
+ * Copyright 2017 Eric Bishton
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -91,6 +92,8 @@ public class HaxeConfigurationEditor {
   private JPanel myCompilerOptionsWrapper;
   private TextFieldWithBrowseButton myOpenFLFileChooserTextField;
   private RawCommandLineEditor myOpenFLArgumentTextField;
+  private JTextField myPackageRemappings;
+  private JButton myEditRemappingsButton;
 
   private HaxeTarget selectedHaxeTarget = HaxeTarget.NEKO;
   private NMETarget selectedNmeTarget = NMETarget.FLASH;
@@ -243,7 +246,9 @@ public class HaxeConfigurationEditor {
       @Override
       public void actionPerformed(ActionEvent e) {
         final Project project = myModule.getProject();
-        final HaxeSettingsConfigurable configurable = new HaxeSettingsConfigurable(project);
+
+        final HaxeSettingsConfigurable configurable = new HaxeCompilerDefinitionsConfigurable(project);
+
         final SingleConfigurableEditor editor = new SingleConfigurableEditor(
           project,
           configurable,
@@ -254,17 +259,40 @@ public class HaxeConfigurationEditor {
         updateMacroses();
       }
     });
+
+    myEditRemappingsButton.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        final Project project = myModule.getProject();
+
+        final HaxeSettingsConfigurable configurable = new HaxePackageRemappingConfigurable(project);
+        final SingleConfigurableEditor editor = new SingleConfigurableEditor(
+          project,
+          configurable,
+          ShowSettingsUtilImpl.createDimensionKey(configurable),
+          false
+        );
+        editor.show();
+        updateRemappings();
+      }
+    });
   }
 
   private void updateComponents() {
     updateUserProperties();
     updateFileChooser();
     updateMacroses();
+    updateRemappings();
   }
 
   private void updateMacroses() {
     final String[] userCompilerDefinitions = HaxeProjectSettings.getInstance(myModule.getProject()).getUserCompilerDefinitions();
-    myDefinedMacroses.setText(StringUtil.join(userCompilerDefinitions, ","));
+    myDefinedMacroses.setText(StringUtil.join(userCompilerDefinitions, HaxeProjectSettings.DEFINITION_SEPARATOR));
+  }
+
+  private void updateRemappings() {
+    final String[] remappings = HaxeProjectSettings.getInstance(myModule.getProject()).getPackageRemappings();
+    myPackageRemappings.setText(StringUtil.join(remappings, HaxeProjectSettings.REMAPPING_SEPARATOR));
   }
 
   private void updateFileChooser() {

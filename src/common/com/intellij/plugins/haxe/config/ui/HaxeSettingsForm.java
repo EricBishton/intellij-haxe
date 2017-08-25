@@ -2,6 +2,7 @@
  * Copyright 2000-2013 JetBrains s.r.o.
  * Copyright 2014-2014 AS3Boyan
  * Copyright 2014-2014 Elias Ku
+ * Copyright 2017 Eric Bishton
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,8 +18,7 @@
  */
 package com.intellij.plugins.haxe.config.ui;
 
-import com.intellij.plugins.haxe.HaxeBundle;
-import com.intellij.plugins.haxe.config.HaxeProjectSettings;
+import com.intellij.plugins.haxe.config.HaxeSettingsHandler;
 import com.intellij.ui.AddDeleteListPanel;
 
 import javax.swing.*;
@@ -32,31 +32,36 @@ import java.util.List;
 public class HaxeSettingsForm {
   private JPanel myPanel;
   private MyAddDeleteListPanel myAddDeleteListPanel;
+  private final HaxeSettingsHandler mySettingsHandler;
+
+  public HaxeSettingsForm(HaxeSettingsHandler handler) {
+    mySettingsHandler = handler;
+  }
 
   public JComponent getPanel() {
     return myPanel;
   }
 
-  public boolean isModified(HaxeProjectSettings settings) {
-    final List<String> oldList = Arrays.asList(settings.getUserCompilerDefinitions());
+  public boolean isModified() {
+    final List<String> oldList = Arrays.asList(mySettingsHandler.getSettingValues());
     final List<String> newList = Arrays.asList(myAddDeleteListPanel.getItems());
     final boolean isEqual = oldList.size() == newList.size() && oldList.containsAll(newList);
     return !isEqual;
   }
 
-  public void applyEditorTo(HaxeProjectSettings settings) {
-    settings.setUserCompilerDefinitions(myAddDeleteListPanel.getItems());
+  public void applyEditorToSettings() {
+    mySettingsHandler.setSettingValues(myAddDeleteListPanel.getItems());
   }
 
-  public void resetEditorFrom(HaxeProjectSettings settings) {
+  public void resetEditorFromSettings() {
     myAddDeleteListPanel.removeALlItems();
-    for (String item : settings.getUserCompilerDefinitions()) {
+    for (String item : mySettingsHandler.getSettingValues()) {
       myAddDeleteListPanel.addItem(item);
     }
   }
 
   private void createUIComponents() {
-    myAddDeleteListPanel = new MyAddDeleteListPanel(HaxeBundle.message("haxe.conditional.compilation.defined.macros"));
+    myAddDeleteListPanel = new MyAddDeleteListPanel(mySettingsHandler.getDialogContextTitle());
   }
 
   private class MyAddDeleteListPanel extends AddDeleteListPanel<String> {
@@ -83,12 +88,7 @@ public class HaxeSettingsForm {
 
     @Override
     protected String findItemToAdd() {
-      final StringValueDialog dialog = new StringValueDialog(myAddDeleteListPanel, false);
-      dialog.show();
-      if (!dialog.isOK()) {
-        return null;
-      }
-      final String stringValue = dialog.getStringValue();
+      final String stringValue = mySettingsHandler.getNewSetting(myAddDeleteListPanel, myListModel);
       return stringValue != null && stringValue.isEmpty() ? null : stringValue;
     }
   }

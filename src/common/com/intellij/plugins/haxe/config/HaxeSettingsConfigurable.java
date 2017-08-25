@@ -2,6 +2,7 @@
  * Copyright 2000-2013 JetBrains s.r.o.
  * Copyright 2014-2014 AS3Boyan
  * Copyright 2014-2014 Elias Ku
+ * Copyright 2017 Eric Bishton
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +21,6 @@ package com.intellij.plugins.haxe.config;
 import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.NonDefaultProjectConfigurable;
 import com.intellij.openapi.options.SearchableConfigurable;
-import com.intellij.openapi.project.Project;
 import com.intellij.plugins.haxe.HaxeBundle;
 import com.intellij.plugins.haxe.config.ui.HaxeSettingsForm;
 import com.intellij.plugins.haxe.util.HaxeUtil;
@@ -33,10 +33,10 @@ import javax.swing.*;
  */
 public class HaxeSettingsConfigurable implements SearchableConfigurable, NonDefaultProjectConfigurable {
   private HaxeSettingsForm mySettingsPane;
-  private final Project myProject;
+  private final HaxeSettingsHandler mySettingsHandler;
 
-  public HaxeSettingsConfigurable(Project project) {
-    myProject = project;
+  public HaxeSettingsConfigurable(HaxeSettingsHandler handler) {
+    mySettingsHandler = handler;
   }
 
   public String getDisplayName() {
@@ -54,34 +54,30 @@ public class HaxeSettingsConfigurable implements SearchableConfigurable, NonDefa
 
   public JComponent createComponent() {
     if (mySettingsPane == null) {
-      mySettingsPane = new HaxeSettingsForm();
+      mySettingsPane = new HaxeSettingsForm(mySettingsHandler);
     }
     reset();
     return mySettingsPane.getPanel();
   }
 
   public boolean isModified() {
-    return mySettingsPane != null && mySettingsPane.isModified(getSettings());
+    return mySettingsPane != null && mySettingsPane.isModified();
   }
 
   public void apply() throws ConfigurationException {
     if (mySettingsPane != null) {
       final boolean modified = isModified();
-      mySettingsPane.applyEditorTo(getSettings());
+      mySettingsPane.applyEditorToSettings();
       if (modified) {
-        HaxeUtil.reparseProjectFiles(myProject);
+        HaxeUtil.reparseProjectFiles(mySettingsHandler.getProject());
       }
     }
   }
 
   public void reset() {
     if (mySettingsPane != null) {
-      mySettingsPane.resetEditorFrom(getSettings());
+      mySettingsPane.resetEditorFromSettings();
     }
-  }
-
-  private HaxeProjectSettings getSettings() {
-    return HaxeProjectSettings.getInstance(myProject);
   }
 
   public void disposeUIResources() {
@@ -91,4 +87,5 @@ public class HaxeSettingsConfigurable implements SearchableConfigurable, NonDefa
   public Runnable enableSearch(String option) {
     return null;
   }
+
 }
