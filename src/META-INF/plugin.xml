@@ -30,7 +30,7 @@
   <depends optional="true" config-file="flex-debugger-support.xml">com.intellij.flex</depends>
   <depends optional="true" config-file="debugger-support.xml">com.intellij.modules.ultimate</depends>
 
-  <version>0.11.2.Preview.1 for @plugin.compatibility.description@</version>
+  <version>0.11.2.Preview.3 for @plugin.compatibility.description@</version>
   <change-notes>
     <![CDATA[
       <p>This jar is compatible with @plugin.compatibility.description@</p>
@@ -40,6 +40,24 @@
       <p>Contribute: <a href="https://www.patreon.com/EricBishton">https://www.patreon.com/EricBishton</a></p>
       <p>Professionally supported and maintained by Bishton Software Solutions: <a href="http://BishtonSoftwareSolutions.com">http://BishtonSoftwareSolutions.com</a></p>
       <p/>
+      <p>0.11.2.Preview.3: (community preview)</p>
+      <ul>
+        <li>Fix bug with environment variables not being passed through to forked processes in some cases. (Issue #659)</li>
+        <li>Add haxelib and neko directories to (the start of) the Path before forking a process.</li>
+        <li>Better tracking of settings changes.</li>
+        <li>Better parsing of HXML/lime (or &quot;haxelib run lime&quot;) output.</li>
+        <li>Fix IndexOutOfBoundsException when checking for static extensions and static member methods have no parameters. (Issue #652)</li>
+        <li>Better parser recovery for &quot;extends&quot; and &quot;implements&quot; statements. (Issue #137)</li>
+        <li>Fixed identifier resolving for dot-references defined in &quottype params.&quot; (Issue#674)</li>
+        <li>Fixed parameter count resolution for anonymous functions. (Partially closes issue #521.)</li>
+      </ul>
+      <p>0.11.2.Preview.2: (community preview)</p>
+      <ul>
+        <li>Add neko and haxelib directories to the PATH/Path environment variable when running plugin commands (affects lime, etc.).</li>
+        <li>Better cache coherency for completions.</li>
+        <li>Improved hxml parsing.</li>
+        <li>Added mechanism to track project and module settings changes.</li>
+      </ul>
       <p>0.11.2.Preview.1: (community preview)</p>
       <ul>
         <li>Improve locating files when traversing the stack frames during debugging.</li>
