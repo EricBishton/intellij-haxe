@@ -30,7 +30,7 @@
   <depends optional="true" config-file="flex-debugger-support.xml">com.intellij.flex</depends>
   <depends optional="true" config-file="debugger-support.xml">com.intellij.modules.ultimate</depends>
 
-  <version>0.11.2.Preview.4 for @plugin.compatibility.description@</version>
+  <version>0.11.2.Preview.5 for @plugin.compatibility.description@</version>
   <change-notes>
     <![CDATA[
       <p>This jar is compatible with @plugin.compatibility.description@</p>
@@ -40,6 +40,29 @@
       <p>Contribute: <a href="https://www.patreon.com/EricBishton">https://www.patreon.com/EricBishton</a></p>
       <p>Professionally supported and maintained by Bishton Software Solutions: <a href="http://BishtonSoftwareSolutions.com">http://BishtonSoftwareSolutions.com</a></p>
       <p/>
+      <p>0.11.2.Preview.5: (community preview)</p>
+      <ul>
+        <li>Parsing fixes: </li>
+        <ul>
+          <li>Expressions inside of type parameters.</li>
+          <li>Make sequential operators cause syntax errors.</li>
+          <li>Allow anonymous local function declarations.</li>
+          <li>External function declarations with simple bodies getting 'Unexpected semicolon' messages.</li>
+          <li>Custom meta-data with empy parentheis.</li>
+          <li>Named nested (local) function declarations.</li>
+          <li>Prototype functions in abstract types.</li>
+          <li>Allow @arrayAccess</li>
+          <li>Array access where the name is parenthesized.</li>
+          <li>Allow @final on property declarations.</li>
+          <li>Allow and recover from variable declarations that don't require a semicolon (e.g. preceded by a block).</li>
+          <li>Allow trailing comma inside of an object literal.</li>
+          <li>Allow trailing comma at the end of an array literal.</li>
+          <li>Block statements when used as an initializer.</li>
+        </ul>
+        <li>Fix NPE when haxelib.json was missing from a library.</li>
+        <li>Fix an exception when the Haxe SDK is set up incorrectly.</li>
+        <li>Added Adobe AIR target</li>
+      </ul>
       <p>0.11.2.Preview.4: (community preview)</p>
       <ul>
         <li>Refactor haxelib library dependency detection and project update.</li>
