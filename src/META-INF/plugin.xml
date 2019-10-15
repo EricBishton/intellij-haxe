@@ -81,7 +81,7 @@
       <p>This jar is compatible with @plugin.compatibility.description@</p>
       <p>It was built using IDEA build @idea.sdk.version@</p>
       <p/>
-      <p>Unreleased Changes</p>
+      <p>Post-1.2-TestBuild.1</p>
       <ul>
         <li>Haxe 4: Allow dotted identifiers in conditional compilation.</li>
         <li>Haxe 4: Allow dotted meta names.</li>
